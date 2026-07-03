@@ -1,0 +1,43 @@
+name: Publish @llmintel/telemetry
+
+# This workflow lives in the PUBLIC mirror repo (hivemindunit/llmintel-telemetry), where the
+# repository root IS the package. Because the mirror is public, npm provenance is accepted.
+# Triggered by the `v*` tag that the monorepo's sync job pushes here.
+#
+# Required secret in the mirror repo: NPM_TOKEN — a granular npm token with read/write on the
+# @llmintel scope (see README "Releasing").
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  id-token: write # required for npm provenance (signed link to this build)
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+          cache: npm
+
+      - name: Install (reproducible)
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish (public, with provenance)
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

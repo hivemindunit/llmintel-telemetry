@@ -1,0 +1,80 @@
+{
+  "name": "@llmintel/telemetry",
+  "version": "0.1.0",
+  "description": "Metadata-only runtime telemetry agent for LLM model usage & cost analysis. Wraps official provider SDKs (OpenAI, Anthropic, Bedrock, Google, Azure) and reports token usage — never prompt/response content — to LLMIntel.",
+  "keywords": [
+    "llm",
+    "openai",
+    "anthropic",
+    "bedrock",
+    "telemetry",
+    "cost",
+    "observability",
+    "token-usage"
+  ],
+  "license": "MIT",
+  "homepage": "https://llmintel.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hivemindunit/llmintel-telemetry.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hivemindunit/llmintel-telemetry/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": ">=0.30.0",
+    "@aws-sdk/client-bedrock-runtime": ">=3.0.0",
+    "@google/generative-ai": ">=0.20.0",
+    "openai": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "openai": {
+      "optional": true
+    },
+    "@anthropic-ai/sdk": {
+      "optional": true
+    },
+    "@aws-sdk/client-bedrock-runtime": {
+      "optional": true
+    },
+    "@google/generative-ai": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
